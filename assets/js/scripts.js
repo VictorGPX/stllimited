@@ -28,10 +28,32 @@ document.addEventListener('DOMContentLoaded',async()=>{
   // menu toggle
   const toggle=document.querySelector('.menu-toggle');
   const nav=document.querySelector('nav');
+  const closeNav=()=>{
+    nav?.classList.remove('open');
+    toggle?.setAttribute('aria-expanded','false');
+    document.querySelectorAll('.service-menu').forEach(menu => menu.classList.remove('open'));
+  };
+  const openNav=()=>{
+    nav?.classList.add('open');
+    toggle?.setAttribute('aria-expanded','true');
+  };
+
   toggle?.addEventListener('click',()=>{
-    nav?.classList.toggle('open');
-    const menu=document.querySelector('.service-menu');
-    if(menu && window.innerWidth <= 900){ menu.classList.toggle('open'); }
+    const isOpen=nav?.classList.contains('open');
+    if(isOpen){ closeNav(); } else { openNav(); }
+    if (window.innerWidth <= 900){
+      document.querySelector('.service-menu')?.classList.toggle('open');
+    }
+  });
+
+  document.addEventListener('click',(event)=>{
+    const clickedInsideNav = nav?.contains(event.target);
+    const clickedToggle = toggle?.contains(event.target);
+    if(!clickedInsideNav && !clickedToggle){ closeNav(); }
+  });
+
+  window.addEventListener('resize',()=>{
+    if(window.innerWidth > 900){ closeNav(); }
   });
 
   document.querySelectorAll('.service-menu').forEach(menu => {
@@ -63,13 +85,38 @@ document.addEventListener('DOMContentLoaded',async()=>{
   const rotator=document.getElementById('service-rotator');
   if(rotator){
     let index=0;
-    setInterval(() => {
-      index = (index + 1) % serviceNames.length;
-      rotator.classList.remove('animate');
-      void rotator.offsetWidth;
-      rotator.textContent = serviceNames[index];
-      rotator.classList.add('animate');
-    }, 1800);
+    let currentText='';
+    let deleting=false;
+
+    const runLoop=()=>{
+      const target=serviceNames[index];
+
+      if(!deleting){
+        currentText = target.slice(0, currentText.length + 1);
+        rotator.textContent=currentText;
+
+        if(currentText.length === target.length){
+          deleting=true;
+          setTimeout(runLoop, 1000);
+          return;
+        }
+      }else{
+        currentText = currentText.slice(0, -1);
+        rotator.textContent=currentText;
+
+        if(currentText.length === 0){
+          deleting=false;
+          index=(index + 1) % serviceNames.length;
+          setTimeout(runLoop, 180);
+          return;
+        }
+      }
+
+      setTimeout(runLoop, 90);
+    };
+
+    rotator.textContent='';
+    setTimeout(runLoop, 250);
   }
 
   // simple form submit handler
