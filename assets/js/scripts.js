@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   }
 
   // hero background mapping for pages using .page-hero
-  const heroMap={'facility-management.html':'https://stllimited.com/wp-content/uploads/2024/06/Facility-management.jpg','intercontinental-logistics.html':'https://stllimited.com/wp-content/uploads/2024/06/International-Logistics.jpg','travel-tourism.html':'https://stllimited.com/wp-content/uploads/2024/06/Travel.jpg','hse-consulting.html':'https://stllimited.com/wp-content/uploads/2025/12/natural-gas-863231-e1765535141167.jpg','oil-gas-solutions.html':'assets/images/oil-gas.png','environmental-services.html':'assets/images/environmental.png','engineering-technical-services.html':'assets/images/engineering.png','construction-infrastructure.html':'assets/images/construction.png'};
+  const heroMap={'facility-management.html':'https://stllimited.com/wp-content/uploads/2024/06/Facility-management.jpg','intercontinental-logistics.html':'https://stllimited.com/wp-content/uploads/2024/06/International-Logistics.jpg','travel-tourism.html':'https://stllimited.com/wp-content/uploads/2024/06/Travel.jpg','hse-consulting.html':'https://stllimited.com/wp-content/uploads/2025/12/natural-gas-863231-e1765535141167.jpg','oil-gas-solutions.html':'assets/images/oil-gas.jpg','environmental-services.html':'assets/images/environmental.jpg','engineering-technical-services.html':'assets/images/engineering.jpg','construction-infrastructure.html':'assets/images/construction.jpg'};
   const pageName=location.pathname.split('/').pop();
   const heroImage=heroMap[pageName];
   const hero=document.querySelector('.page-hero');
@@ -160,6 +160,15 @@ document.addEventListener('DOMContentLoaded',async()=>{
     hero.style.backgroundSize='cover';hero.style.backgroundPosition='center';hero.style.color='#fff';
     hero.querySelectorAll('p').forEach(p=>p.style.color='#e7f2f8');
   }
+
+  const backToTop=document.createElement('button');
+  backToTop.className='back-to-top';
+  backToTop.type='button';
+  backToTop.setAttribute('aria-label','Back to top');
+  backToTop.title='Back to top';
+  backToTop.textContent='↑';
+  backToTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  document.body.append(backToTop);
 });
 
 				(function(){
